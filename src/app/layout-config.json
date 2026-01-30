@@ -1,0 +1,26 @@
+{
+  "avatar": {
+    "x": 84,
+    "y": 260,
+    "width": 295,
+    "height": 219
+  },
+  "name": {
+    "x": 240,
+    "y": 472
+  },
+  "position": {
+    "x": 237,
+    "y": 504
+  },
+  "content": {
+    "x": 520,
+    "y": 245,
+    "width": 614,
+    "height": 419
+  },
+  "dimensions": {
+    "width": 1200,
+    "height": 675
+  }
+}

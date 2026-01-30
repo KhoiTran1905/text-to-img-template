@@ -1,0 +1,256 @@
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.leftPanel,
+.rightPanel {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.leftPanel {
+  width: 30%;
+  border-right: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+}
+
+.rightPanel {
+  width: 70%;
+  background-color: #eef2f5;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .leftPanel,
+  .rightPanel {
+    width: 100%;
+    height: auto;
+    display: block;
+    padding: 1rem;
+  }
+
+  .leftPanel {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .previewWrapper {
+    padding: 1rem 0;
+    /* Tight on mobile */
+    overflow: visible;
+    /* Let scaler handle it */
+  }
+
+  /* Reset height to let content flow */
+  body {
+    height: auto;
+    overflow: auto;
+  }
+}
+
+.form {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.input,
+.textarea {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #0070f3;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.button {
+  background-color: #0070f3;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.button:hover {
+  background-color: #0051a2;
+}
+
+/* Preview Area */
+.previewWrapper {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  /* Important for scaling */
+  padding: 1rem;
+}
+
+.scalerContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background-color: transparent;
+  /* Use image background */
+  overflow: visible;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: block;
+}
+
+.cardContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* The Content Box Area - Position matched to the image's white box area */
+/* Assuming the image has a white box on the right. 
+   We overlay a semi-transparent or transparent box to hold text.
+   I'll make it slightly white to ensure legibility if the image isn't perfect white */
+/* The Content Box Area */
+/* Transparent background as requested */
+.contentBox {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5%;
+  /* Percentage-based padding scales with container */
+  align-items: flex-start;
+  justify-content: flex-start;
+  z-index: 10;
+  overflow: hidden;
+  /* JS auto-scales text to prevent overflow */
+  /* background: rgba(255, 255, 255, 0.95); Removed */
+}
+
+.contentTitle {
+  font-size: clamp(0.6rem, 1.2vw, 1rem);
+  /* Scales with viewport */
+  margin-bottom: 1%;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.expectation {
+  font-size: clamp(0.7rem, 1.3vw, 1.1rem);
+  /* Responsive font size */
+  line-height: 1.6;
+  color: #333;
+  width: 100%;
+  text-align: justify;
+  /* Justify alignment as requested */
+  white-space: pre-wrap;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* Avatar Circle */
+.avatarContainer {
+  position: absolute;
+  z-index: 20;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #333;
+  background-color: #f0f0f0;
+}
+
+.placeholderAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #333;
+}
+
+.infoBox {
+  /* Legacy container, likely unused in dynamic layout but keeping for safety */
+  position: absolute;
+  z-index: 20;
+}
+
+.name {
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+  /* Responsive sizing */
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.position {
+  font-size: clamp(0.7rem, 1.2vw, 1rem);
+  /* Responsive sizing */
+  color: #333;
+  font-weight: normal;
+  text-transform: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  white-space: nowrap;
+  text-align: center;
+}

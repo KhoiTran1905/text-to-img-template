@@ -190,7 +190,7 @@
 
 .expectation {
   font-family: 'SVN-Nusrat', sans-serif;
-  font-size: clamp(0.4rem, 1.5vw, 1.7rem);
+  font-size: clamp(0.4rem, 1.7vw, 1.7rem);
   /* Responsive font size */
   line-height: 1.6;
   color: #fff;

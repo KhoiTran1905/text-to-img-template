@@ -189,10 +189,10 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                             value={expectation}
                             onChange={(e) => setExpectation(e.target.value)}
                             className={styles.textarea}
-                            maxLength={300}
+                            maxLength={500}
                         />
                         <div style={{ textAlign: 'right', fontSize: '0.8rem', color: '#999' }}>
-                            {expectation.length}/300
+                            {expectation.length}/500
                         </div>
                     </div>
 

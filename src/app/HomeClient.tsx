@@ -305,9 +305,6 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                         </div>
                     </div>
                 </div>
-                <p style={{ marginTop: '1rem', textAlign: 'center', color: '#888', fontSize: '0.85rem' }}>
-                    *Đây là bản xem trước. Nhấn "Tải xuống ảnh" để lưu.
-                </p>
             </div>
 
             {/* Crop Modal */}

@@ -1,23 +1,23 @@
 {
   "avatar": {
-    "x": 84,
-    "y": 260,
-    "width": 295,
-    "height": 219
+    "x": 95,
+    "y": 79,
+    "width": 340,
+    "height": 300
   },
   "name": {
-    "x": 240,
-    "y": 472
+    "x": 268,
+    "y": 432
   },
   "position": {
-    "x": 237,
-    "y": 504
+    "x": 272,
+    "y": 467
   },
   "content": {
-    "x": 520,
-    "y": 245,
-    "width": 614,
-    "height": 419
+    "x": 559,
+    "y": 122,
+    "width": 586,
+    "height": 406
   },
   "dimensions": {
     "width": 1200,

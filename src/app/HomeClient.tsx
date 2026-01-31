@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './page.module.css';
 import html2canvas from 'html2canvas';
+import Cropper, { Area } from 'react-easy-crop';
+import getCroppedImg from '@/utils/cropImage';
 
 type LayoutConfig = {
     dimensions?: { width: number; height: number };
     avatar: { x: number; y: number; width: number; height: number };
     name: { x: number; y: number };
     position: { x: number; y: number };
-    content: { x: number; y: number; width: number; height: number };
+    content: { x: number; y: number; width: number; height: number }; // Changed to object with coords
 };
 
 // Helper to convert pixel coordinates to percentages
@@ -27,6 +29,13 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
     const contentBoxRef = useRef<HTMLDivElement>(null);
     const contentTextRef = useRef<HTMLDivElement>(null);
     const [contentFontSize, setContentFontSize] = useState<number | null>(null);
+
+    // Cropping State
+    const [tempImageSrc, setTempImageSrc] = useState<string | null>(null);
+    const [isCropping, setIsCropping] = useState(false);
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
 
     // Reference dimensions from config (or defaults)
     const refWidth = config.dimensions?.width || 1200;
@@ -76,17 +85,44 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
         if (file) {
             const reader = new FileReader();
             reader.onload = (event) => {
-                setAvatar(event.target?.result as string);
+                setTempImageSrc(event.target?.result as string);
+                setIsCropping(true);
+                setZoom(1);
+                setCrop({ x: 0, y: 0 });
             };
             reader.readAsDataURL(file);
         }
+        // Reset input value to allow re-selecting the same file if needed
+        e.target.value = '';
+    };
+
+    const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
+        setCroppedAreaPixels(croppedAreaPixels);
+    }, []);
+
+    const handleSaveCrop = async () => {
+        if (tempImageSrc && croppedAreaPixels) {
+            try {
+                const croppedImage = await getCroppedImg(tempImageSrc, croppedAreaPixels);
+                setAvatar(croppedImage);
+                setIsCropping(false);
+                setTempImageSrc(null);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    };
+
+    const handleCancelCrop = () => {
+        setIsCropping(false);
+        setTempImageSrc(null);
     };
 
     const handleDownload = async () => {
         if (cardRef.current) {
             try {
                 const canvas = await html2canvas(cardRef.current, {
-                    scale: 3,
+                    scale: 4, // Increased scale for better quality
                     useCORS: true,
                     backgroundColor: null,
                     logging: false,
@@ -173,7 +209,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                     <div
                         className={styles.card}
                         ref={cardRef}
-                        style={{ position: 'relative' }}
+                    // style={{ position: 'relative' }} // Moved class to css check if works
                     >
                         <img
                             ref={imgRef}
@@ -203,7 +239,6 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                                     right: 'auto', bottom: 'auto'
                                 }}
                             >
-                                <div className={styles.contentTitle}>Content</div>
                                 <div
                                     ref={contentTextRef}
                                     className={styles.expectation}
@@ -223,7 +258,18 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                                 }}
                             >
                                 {avatar ? (
-                                    <img src={avatar} alt="Avatar" className={styles.avatar} />
+                                    <img
+                                        src={avatar}
+                                        alt="Avatar"
+                                        className={styles.avatar}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                            borderRadius: '50%',
+                                            display: 'block'
+                                        }}
+                                    />
                                 ) : (
                                     <div className={`${styles.avatar} ${styles.placeholderAvatar}`}>AVATAR</div>
                                 )}
@@ -263,6 +309,55 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                     *Đây là bản xem trước. Nhấn "Tải xuống ảnh" để lưu.
                 </p>
             </div>
+
+            {/* Crop Modal */}
+            {isCropping && tempImageSrc && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <div className={styles.modalTitle}>Chỉnh sửa ảnh</div>
+                        <div className={styles.cropContainer}>
+                            <Cropper
+                                image={tempImageSrc}
+                                crop={crop}
+                                zoom={zoom}
+                                aspect={1} // Avatar is typically square
+                                onCropChange={setCrop}
+                                onZoomChange={setZoom}
+                                onCropComplete={onCropComplete}
+                            />
+                        </div>
+                        <div className={styles.controls}>
+                            <div className={styles.sliderContainer}>
+                                <span className={styles.sliderLabel}>Zoom</span>
+                                <input
+                                    type="range"
+                                    value={zoom}
+                                    min={1}
+                                    max={3}
+                                    step={0.1}
+                                    aria-labelledby="Zoom"
+                                    onChange={(e) => setZoom(Number(e.target.value))}
+                                    className={styles.zoomRange}
+                                />
+                            </div>
+                            <div className={styles.buttonGroup}>
+                                <button
+                                    onClick={handleCancelCrop}
+                                    className={styles.cancelButton}
+                                >
+                                    Hủy bỏ
+                                </button>
+                                <button
+                                    onClick={handleSaveCrop}
+                                    className={styles.saveButton}
+                                >
+                                    Lưu ảnh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

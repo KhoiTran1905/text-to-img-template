@@ -232,7 +232,7 @@
 }
 
 .name {
-  font-size: clamp(0.8rem, 1vw, 1.2rem);
+  font-size: clamp(0.8rem, 1.3vw, 1.5rem);
   /* Responsive sizing */
   font-weight: bold;
   color: #E52944;
@@ -248,6 +248,7 @@
   color: #2F60D3;
   font-weight: normal;
   text-transform: none;
+  font-style: italic;
   border: none;
   margin: 0;
   padding: 0;

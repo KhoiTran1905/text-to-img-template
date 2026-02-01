@@ -145,7 +145,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
             {/* Left Side: Form */}
             <div className={styles.leftPanel}>
                 <div className={styles.form}>
-                    <h2 style={{ marginBottom: '0.5rem', color: '#111' }}>Tạo Thẻ Giới Thiệu</h2>
+                    <h2 style={{ marginBottom: '0.5rem', color: '#111' }}>Trường THCS Long Hiệp</h2>
                     <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '1rem' }}>
                         Nhập thông tin bên dưới để tạo thẻ của riêng bạn.
                     </p>
@@ -175,7 +175,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                         <label className={styles.label}>Chức vụ</label>
                         <input
                             type="text"
-                            placeholder="Ví dụ: Giám đốc kinh doanh"
+                            placeholder="Ví dụ: Chi đội trưởng"
                             value={position}
                             onChange={(e) => setPosition(e.target.value)}
                             className={styles.input}
@@ -183,9 +183,9 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label}>Kỳ vọng của bạn</label>
+                        <label className={styles.label}>Tin hoạt động</label>
                         <textarea
-                            placeholder="Chia sẻ ngắn gọn về kỳ vọng hoặc mục tiêu của bạn..."
+                            placeholder="Nội dung diễn tả hoạt động..."
                             value={expectation}
                             onChange={(e) => setExpectation(e.target.value)}
                             className={styles.textarea}
@@ -243,7 +243,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                                     ref={contentTextRef}
                                     className={styles.expectation}
                                 >
-                                    {expectation || "Nội dung kỳ vọng của bạn sẽ hiển thị ở đây. Hãy nhập thông tin để xem trước kết quả."}
+                                    {expectation || "Nội dung diễn tả hoạt động..."}
                                 </div>
                             </div>
 
@@ -260,7 +260,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                                 {avatar ? (
                                     <img
                                         src={avatar}
-                                        alt="Avatar"
+                                        alt="Hình hoạt động"
                                         className={styles.avatar}
                                         style={{
                                             width: '100%',
@@ -271,7 +271,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                                         }}
                                     />
                                 ) : (
-                                    <div className={`${styles.avatar} ${styles.placeholderAvatar}`}>AVATAR</div>
+                                    <div className={`${styles.avatar} ${styles.placeholderAvatar}`}>Hình hoạt động</div>
                                 )}
                             </div>
 
@@ -286,7 +286,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                                     zIndex: 30
                                 }}
                             >
-                                {name || "FULL NAME"}
+                                {name || "HỌ VÀ TÊN"}
                             </div>
 
                             {/* Position */}
@@ -300,7 +300,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                                     zIndex: 30
                                 }}
                             >
-                                {position || "Position"}
+                                {position || "Chức vụ"}
                             </div>
                         </div>
                     </div>

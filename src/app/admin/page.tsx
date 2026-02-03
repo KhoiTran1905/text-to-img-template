@@ -307,6 +307,34 @@ export default function AdminPage() {
                                 Uploading a new image will update the layout dimensions.
                             </p>
                         </div>
+
+                        <div style={{ marginBottom: '2rem' }}>
+                            <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>Text Color (Expectation):</label>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                <input
+                                    type="color"
+                                    value={config.textColor || '#000000'}
+                                    onChange={(e) => {
+                                        setConfig({
+                                            ...config,
+                                            textColor: e.target.value
+                                        });
+                                    }}
+                                    style={{ width: '50px', height: '50px', border: 'none', cursor: 'pointer' }}
+                                />
+                                <input
+                                    type="text"
+                                    value={config.textColor || '#000000'}
+                                    onChange={(e) => {
+                                        setConfig({
+                                            ...config,
+                                            textColor: e.target.value
+                                        });
+                                    }}
+                                    style={{ padding: '0.5rem', background: '#444', border: '1px solid #555', color: 'white', width: '100px' }}
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     {/* Right Column: Preview */}
@@ -348,7 +376,10 @@ export default function AdminPage() {
                                         onMouseDown={(e) => onDragStart(e, 'content')}
                                     >
                                         <div className={styles.contentTitle}>Content Area (Drag Me)</div>
-                                        <div className={styles.expectation}>
+                                        <div
+                                            className={styles.expectation}
+                                            style={{ color: config.textColor || '#000000' }}
+                                        >
                                             [Generic Content Placeholder]
                                         </div>
                                         <div

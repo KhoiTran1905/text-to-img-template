@@ -16,7 +16,8 @@ export async function getLayoutConfig() {
             avatar: { x: 60, y: 140, width: 220, height: 220 },
             name: { x: 40, y: 400 },
             position: { x: 40, y: 435 },
-            content: { x: 380, y: 60, width: 480, height: 380 }
+            content: { x: 380, y: 60, width: 480, height: 380 },
+            textColor: '#000000'
         };
     }
 }

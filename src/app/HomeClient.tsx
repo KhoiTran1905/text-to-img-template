@@ -12,6 +12,7 @@ type LayoutConfig = {
     name: { x: number; y: number };
     position: { x: number; y: number };
     content: { x: number; y: number; width: number; height: number }; // Changed to object with coords
+    textColor?: string;
 };
 
 // Helper to convert pixel coordinates to percentages
@@ -242,6 +243,7 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                                 <div
                                     ref={contentTextRef}
                                     className={styles.expectation}
+                                    style={{ color: config.textColor || '#000000' }}
                                 >
                                     {expectation || "Nội dung diễn tả hoạt động..."}
                                 </div>

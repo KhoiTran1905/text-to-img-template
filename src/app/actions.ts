@@ -52,3 +52,38 @@ export async function uploadBackgroundImage(formData: FormData) {
         return { success: false, error: 'Failed to upload background' };
     }
 }
+const logPath = path.join(process.cwd(), 'src', 'app', 'logs.json');
+
+export async function logDownload(name: string) {
+    try {
+        let logs = { total: 0, entries: [] as any[] };
+        try {
+            const data = await fs.readFile(logPath, 'utf8');
+            logs = JSON.parse(data);
+        } catch (e) {
+            // File doesn't exist yet, use default
+        }
+
+        logs.total += 1;
+        logs.entries.push({
+            name: name || 'Anonymous',
+            timestamp: new Date().toISOString()
+        });
+
+        // Limit entries to last 1000 to keep file size reasonable, or keep all
+        await fs.writeFile(logPath, JSON.stringify(logs, null, 2));
+        return { success: true };
+    } catch (error) {
+        console.error("Error logging download:", error);
+        return { success: false };
+    }
+}
+
+export async function getLogs() {
+    try {
+        const data = await fs.readFile(logPath, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        return { total: 0, entries: [] };
+    }
+}

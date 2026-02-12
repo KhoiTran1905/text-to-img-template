@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './page.module.css';
 import html2canvas from 'html2canvas';
+import { logDownload } from './actions';
 import Cropper, { Area } from 'react-easy-crop';
 import getCroppedImg from '@/utils/cropImage';
 
@@ -134,6 +135,9 @@ export default function HomeClient({ config }: { config: LayoutConfig }) {
                 link.download = `${fileName}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+
+                // Log the download
+                await logDownload(name);
             } catch (err) {
                 console.error("Failed to generate image", err);
                 alert("Could not generate image. Please try again.");

@@ -52,28 +52,38 @@ export async function uploadBackgroundImage(formData: FormData) {
         return { success: false, error: 'Failed to upload background' };
     }
 }
-import { Redis } from '@upstash/redis';
+import { db } from '@/lib/firebase';
+import { FieldValue } from 'firebase-admin/firestore';
 
-// Initialize Upstash Redis
-const redis = Redis.fromEnv();
-
-// Upstash Redis based logging
+// Firebase Firestore based logging
 export async function logDownload(name: string) {
     try {
-        // Get current total count (atomic increment)
-        const total = await redis.incr('download:total');
+        const logsRef = db.collection('logs');
+        const statsRef = logsRef.doc('stats');
+        const entriesRef = logsRef.doc('entries');
 
         // Create log entry
         const entry = {
             name: name || 'Anonymous',
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            timestampMillis: Date.now()
         };
 
-        // Add to entries list (using sorted set with timestamp as score for easy retrieval)
-        await redis.zadd('download:entries', {
-            score: Date.now(),
-            member: JSON.stringify(entry)
-        });
+        // Batch write for atomic operation
+        const batch = db.batch();
+
+        // Increment total count
+        batch.set(statsRef, {
+            total: FieldValue.increment(1),
+            lastUpdated: FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        // Add entry to entries array
+        batch.set(entriesRef, {
+            data: FieldValue.arrayUnion(entry)
+        }, { merge: true });
+
+        await batch.commit();
 
         return { success: true };
     } catch (error) {
@@ -84,21 +94,28 @@ export async function logDownload(name: string) {
 
 export async function getLogs() {
     try {
+        const logsRef = db.collection('logs');
+
         // Get total count
-        const total = await redis.get('download:total') || 0;
+        const statsDoc = await logsRef.doc('stats').get();
+        const total = statsDoc.exists ? (statsDoc.data()?.total || 0) : 0;
 
-        // Get all entries (sorted by timestamp, newest first)
-        const entries = await redis.zrange('download:entries', 0, -1, { rev: true });
+        // Get entries
+        const entriesDoc = await logsRef.doc('entries').get();
+        const entries = entriesDoc.exists ? (entriesDoc.data()?.data || []) : [];
 
-        // Parse entries
-        const parsedEntries = entries.map((entry: any) => JSON.parse(entry));
+        // Sort by timestamp (newest first)
+        const sortedEntries = entries.sort((a: any, b: any) =>
+            (b.timestampMillis || 0) - (a.timestampMillis || 0)
+        );
 
         return {
             total: Number(total),
-            entries: parsedEntries
+            entries: sortedEntries
         };
     } catch (error) {
         console.error("Error getting logs:", error);
         return { total: 0, entries: [] };
     }
 }
+

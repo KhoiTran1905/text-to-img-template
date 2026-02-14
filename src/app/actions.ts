@@ -52,13 +52,16 @@ export async function uploadBackgroundImage(formData: FormData) {
         return { success: false, error: 'Failed to upload background' };
     }
 }
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 
-// Vercel KV based logging
+// Initialize Upstash Redis
+const redis = Redis.fromEnv();
+
+// Upstash Redis based logging
 export async function logDownload(name: string) {
     try {
         // Get current total count (atomic increment)
-        const total = await kv.incr('download:total');
+        const total = await redis.incr('download:total');
 
         // Create log entry
         const entry = {
@@ -67,7 +70,7 @@ export async function logDownload(name: string) {
         };
 
         // Add to entries list (using sorted set with timestamp as score for easy retrieval)
-        await kv.zadd('download:entries', {
+        await redis.zadd('download:entries', {
             score: Date.now(),
             member: JSON.stringify(entry)
         });
@@ -82,10 +85,10 @@ export async function logDownload(name: string) {
 export async function getLogs() {
     try {
         // Get total count
-        const total = await kv.get('download:total') || 0;
+        const total = await redis.get('download:total') || 0;
 
         // Get all entries (sorted by timestamp, newest first)
-        const entries = await kv.zrange('download:entries', 0, -1, { rev: true });
+        const entries = await redis.zrange('download:entries', 0, -1, { rev: true });
 
         // Parse entries
         const parsedEntries = entries.map((entry: any) => JSON.parse(entry));

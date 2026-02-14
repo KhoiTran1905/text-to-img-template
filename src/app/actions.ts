@@ -52,26 +52,26 @@ export async function uploadBackgroundImage(formData: FormData) {
         return { success: false, error: 'Failed to upload background' };
     }
 }
-const logPath = path.join(process.cwd(), 'src', 'app', 'logs.json');
+import { kv } from '@vercel/kv';
 
+// Vercel KV based logging
 export async function logDownload(name: string) {
     try {
-        let logs = { total: 0, entries: [] as any[] };
-        try {
-            const data = await fs.readFile(logPath, 'utf8');
-            logs = JSON.parse(data);
-        } catch (e) {
-            // File doesn't exist yet, use default
-        }
+        // Get current total count (atomic increment)
+        const total = await kv.incr('download:total');
 
-        logs.total += 1;
-        logs.entries.push({
+        // Create log entry
+        const entry = {
             name: name || 'Anonymous',
             timestamp: new Date().toISOString()
+        };
+
+        // Add to entries list (using sorted set with timestamp as score for easy retrieval)
+        await kv.zadd('download:entries', {
+            score: Date.now(),
+            member: JSON.stringify(entry)
         });
 
-        // Limit entries to last 1000 to keep file size reasonable, or keep all
-        await fs.writeFile(logPath, JSON.stringify(logs, null, 2));
         return { success: true };
     } catch (error) {
         console.error("Error logging download:", error);
@@ -81,9 +81,21 @@ export async function logDownload(name: string) {
 
 export async function getLogs() {
     try {
-        const data = await fs.readFile(logPath, 'utf8');
-        return JSON.parse(data);
+        // Get total count
+        const total = await kv.get('download:total') || 0;
+
+        // Get all entries (sorted by timestamp, newest first)
+        const entries = await kv.zrange('download:entries', 0, -1, { rev: true });
+
+        // Parse entries
+        const parsedEntries = entries.map((entry: any) => JSON.parse(entry));
+
+        return {
+            total: Number(total),
+            entries: parsedEntries
+        };
     } catch (error) {
+        console.error("Error getting logs:", error);
         return { total: 0, entries: [] };
     }
 }

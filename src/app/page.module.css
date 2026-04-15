@@ -399,3 +399,320 @@
 .saveButton:hover {
   background: #0051a2;
 }
+
+/* Feedback Form Styles */
+.feedbackContainer {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  padding: 1.5rem;
+}
+
+.feedbackOverlay {
+  width: 100%;
+  max-width: 600px;
+}
+
+.feedbackCard {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.feedbackHeader {
+  color: #1a2a6c;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.feedbackForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.feedbackGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feedbackGroup label {
+  font-weight: 700;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.feedbackGroup input, 
+.feedbackGroup textarea {
+  padding: 0.8rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+  color: #1e293b;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.feedbackGroup input::placeholder, 
+.feedbackGroup textarea::placeholder {
+  color: #94a3b8;
+}
+
+.feedbackGroup input:focus, 
+.feedbackGroup textarea:focus {
+  border-color: #0070f3;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+}
+
+.feedbackButton {
+  background: #0070f3;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.feedbackButton:hover {
+  background: #0051a2;
+}
+
+.feedbackButton:active {
+  transform: scale(0.98);
+}
+
+.successAlert {
+  background: #e6fffa;
+  color: #234e52;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border: 1px solid #b2f5ea;
+}
+
+/* Admin Dashboard Table Styles */
+.adminContainer {
+  padding: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.adminHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.tableWrapper {
+  background: white;
+  border-radius: 16px;
+  overflow-x: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+}
+
+.adminTable {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 800px;
+}
+
+.adminTable th {
+  background: #f8fafc;
+  padding: 1.2rem 1rem;
+  text-align: left;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #edf2f7;
+}
+
+.adminTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.adminTable tr:last-child td {
+  border-bottom: none;
+}
+
+.adminTable tr:hover {
+  background: #fdfdfd;
+}
+
+.rowReplied {
+  background: #f0fdf4 !important;
+}
+
+.colName {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.colTitle {
+  font-weight: 500;
+  color: #475569;
+}
+
+.colContent {
+  max-width: 300px;
+}
+
+.contentScroll {
+  max-height: 80px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+  padding-right: 5px;
+}
+
+/* Custom Scrollbar for content */
+.contentScroll::-webkit-scrollbar {
+  width: 4px;
+}
+.contentScroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.colDate {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.statusBadgePending {
+  background: #fef3c7;
+  color: #92400e;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.statusBadgeReplied {
+  background: #dcfce7;
+  color: #166534;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.colActions {
+  text-align: center;
+}
+
+.iconDeleteButton {
+  background: transparent;
+  border: 1px solid #fee2e2;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.iconDeleteButton:hover {
+  background: #fee2e2;
+  transform: scale(1.1);
+}
+
+.refreshButton {
+  background: #0070f3;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.refreshButton:hover {
+  background: #0051a2;
+}
+
+.adminLoginForm {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.adminLoginForm h3 {
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+  font-weight: 800;
+}
+
+.adminInput {
+  padding: 0.8rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.adminInput:focus {
+  outline: none;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+}
+
+.adminButton {
+  background: #0070f3;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.adminButton:hover {
+  background: #0051a2;
+}

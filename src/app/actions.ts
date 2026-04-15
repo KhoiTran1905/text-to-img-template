@@ -119,3 +119,56 @@ export async function getLogs() {
     }
 }
 
+// Feedback / Q&A Actions
+export async function submitFeedback(formData: { name: string, title: string, content: string }) {
+    try {
+        const feedbackRef = db.collection('feedbacks');
+        await feedbackRef.add({
+            ...formData,
+            createdAt: FieldValue.serverTimestamp(),
+            status: 'pending'
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Error submitting feedback:", error);
+        return { success: false, error: 'Failed to submit' };
+    }
+}
+
+export async function getFeedbacks() {
+    try {
+        const feedbackRef = db.collection('feedbacks').orderBy('createdAt', 'desc');
+        const snapshot = await feedbackRef.get();
+        const feedbacks = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: doc.data().createdAt?.toDate().toISOString() || new Date().toISOString()
+        }));
+        return { success: true, data: feedbacks };
+    } catch (error) {
+        console.error("Error getting feedbacks:", error);
+        return { success: false, error: 'Failed to fetch' };
+    }
+}
+
+export async function deleteFeedback(id: string) {
+    try {
+        await db.collection('feedbacks').doc(id).delete();
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting feedback:", error);
+        return { success: false };
+    }
+}
+
+export async function updateFeedback(id: string, data: any) {
+    try {
+        await db.collection('feedbacks').doc(id).update(data);
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating feedback:", error);
+        return { success: false };
+    }
+}
+
+
